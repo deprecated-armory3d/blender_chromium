@@ -1,0 +1,6 @@
+MacOS:
+- cd build_darwin, cmake ../blender -G Xcode
+- select install scheme in XCode, set Blender.app as startup
+- blender scheme - set rpath/Runtime Search Path: @executable_path/..
+- bf_intern_cycles scheme - c++ compiler flags: gline-tables-only
+- copy Frameworks folder to .app/Contents
