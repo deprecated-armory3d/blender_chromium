@@ -571,6 +571,7 @@ function(SETUP_BLENDER_SORTED_LIBS)
 		bf_editor_space_time
 		bf_editor_space_userpref
 		bf_editor_space_view3d
+		bf_editor_space_armory
 		bf_editor_space_clip
 
 		bf_editor_transform
@@ -598,6 +599,7 @@ function(SETUP_BLENDER_SORTED_LIBS)
 		bf_python_ext
 		bf_python_mathutils
 		bf_python_bmesh
+		bf_python_barmory
 		bf_freestyle
 		bf_ikplugin
 		bf_modifiers

@@ -73,6 +73,7 @@
 #include "../generic/blf_py_api.h"
 #include "../generic/idprop_py_api.h"
 #include "../bmesh/bmesh_py_api.h"
+#include "../barmory/barmory_py_api.h"
 #include "../mathutils/mathutils.h"
 
 
@@ -215,6 +216,7 @@ static struct _inittab bpy_internal_modules[] = {
 	{"bgl", BPyInit_bgl},
 	{"blf", BPyInit_blf},
 	{"bmesh", BPyInit_bmesh},
+	{"barmory", BPyInit_barmory},
 #if 0
 	{"bmesh.types", BPyInit_bmesh_types},
 	{"bmesh.utils", BPyInit_bmesh_utils},

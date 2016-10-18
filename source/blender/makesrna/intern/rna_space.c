@@ -64,6 +64,7 @@ EnumPropertyItem rna_enum_space_type_items[] = {
 	/* empty must be here for python, is skipped for UI */
 	{SPACE_EMPTY, "EMPTY", ICON_NONE, "Empty", ""},
 	{SPACE_VIEW3D, "VIEW_3D", ICON_VIEW3D, "3D View", "3D viewport"},
+	{SPACE_ARMORY, "VIEW_ARMORY", ICON_PLAY, "Armory", "Armory viewport"},
 	{0, "", ICON_NONE, NULL, NULL},
 	{SPACE_TIME, "TIMELINE", ICON_TIME, "Timeline", "Timeline and playback controls"},
 	{SPACE_IPO, "GRAPH_EDITOR", ICON_IPO, "Graph Editor", "Edit drivers and keyframe interpolation"},
@@ -315,6 +316,8 @@ static StructRNA *rna_Space_refine(struct PointerRNA *ptr)
 			return &RNA_SpaceUserPreferences;
 		case SPACE_CLIP:
 			return &RNA_SpaceClipEditor;
+		case SPACE_ARMORY:
+			return &RNA_SpaceArmory;
 		default:
 			return &RNA_Space;
 	}
@@ -4734,6 +4737,17 @@ static void rna_def_space_clip(BlenderRNA *brna)
 	RNA_def_property_update(prop, NC_SPACE | ND_SPACE_CLIP, NULL);
 }
 
+static void rna_def_space_armory(BlenderRNA *brna)
+{
+	StructRNA *srna;
+	PropertyRNA *prop;
+
+	srna = RNA_def_struct(brna, "SpaceArmory", "Space");
+	RNA_def_struct_sdna(srna, "SpaceArmory");
+	RNA_def_struct_ui_text(srna, "Space Armory", "Armory space data");
+
+}
+
 
 void RNA_def_space(BlenderRNA *brna)
 {
@@ -4760,6 +4774,7 @@ void RNA_def_space(BlenderRNA *brna)
 	rna_def_space_node(brna);
 	rna_def_space_logic(brna);
 	rna_def_space_clip(brna);
+	rna_def_space_armory(brna);
 }
 
 #endif

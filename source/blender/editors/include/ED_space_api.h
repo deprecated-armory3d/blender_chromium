@@ -43,6 +43,7 @@ void ED_spacemacros_init(void);
 void ED_spacetype_outliner(void);
 void ED_spacetype_time(void);
 void ED_spacetype_view3d(void);
+void ED_spacetype_armory(void);
 void ED_spacetype_ipo(void);
 void ED_spacetype_image(void);
 void ED_spacetype_node(void);
