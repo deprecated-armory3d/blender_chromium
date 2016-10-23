@@ -222,7 +222,7 @@ void CefPrintSettingsCToCpp::GetPageRanges(PageRangeList& ranges) {
 
   // Translate param: ranges; type: simple_vec_byref
   size_t rangesSize = ranges.size();
-  size_t rangesCount = std::max(GetPageRangesCount(), rangesSize);
+  size_t rangesCount = (std::max)(GetPageRangesCount(), rangesSize);
   cef_range_t* rangesList = NULL;
   if (rangesCount > 0) {
     rangesList = new cef_range_t[rangesCount];

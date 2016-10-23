@@ -46,7 +46,7 @@ class CefStreamResourceHandler::Buffer {
 
   int WriteTo(void* data_out, int bytes_to_read) {
     const int write_size =
-        std::min(bytes_to_read, bytes_written_ - bytes_read_);
+        (std::min)(bytes_to_read, bytes_written_ - bytes_read_);
     if (write_size > 0) {
       memcpy(data_out, buffer_ .get() + bytes_read_, write_size);
       bytes_read_ += write_size;

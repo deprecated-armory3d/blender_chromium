@@ -276,7 +276,7 @@ void CefBrowserCToCpp::GetFrameIdentifiers(std::vector<int64>& identifiers) {
 
   // Translate param: identifiers; type: simple_vec_byref
   size_t identifiersSize = identifiers.size();
-  size_t identifiersCount = std::max(GetFrameCount(), identifiersSize);
+  size_t identifiersCount = (std::max)(GetFrameCount(), identifiersSize);
   int64* identifiersList = NULL;
   if (identifiersCount > 0) {
     identifiersList = new int64[identifiersCount];

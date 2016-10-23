@@ -24,7 +24,7 @@ namespace {
 // Returns |url| without the query or fragment components, if any.
 std::string GetUrlWithoutQueryOrFragment(const std::string& url) {
   // Find the first instance of '?' or '#'.
-  const size_t pos = std::min(url.find('?'), url.find('#'));
+  const size_t pos = (std::min)(url.find('?'), url.find('#'));
   if (pos != std::string::npos)
     return url.substr(0, pos);
 

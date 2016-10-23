@@ -67,7 +67,7 @@ void CefDisplay::GetAllDisplays(std::vector<CefRefPtr<CefDisplay>>& displays) {
 
   // Translate param: displays; type: refptr_vec_same_byref
   size_t displaysSize = displays.size();
-  size_t displaysCount = std::max(GetDisplayCount(), displaysSize);
+  size_t displaysCount = (std::max)(GetDisplayCount(), displaysSize);
   cef_display_t** displaysList = NULL;
   if (displaysCount > 0) {
     displaysList = new cef_display_t*[displaysCount];

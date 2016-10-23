@@ -16,7 +16,7 @@ CefByteReadHandler::CefByteReadHandler(const unsigned char* bytes, size_t size,
 size_t CefByteReadHandler::Read(void* ptr, size_t size, size_t n) {
   base::AutoLock lock_scope(lock_);
   size_t s = static_cast<size_t>(size_ - offset_) / size;
-  size_t ret = std::min(n, s);
+  size_t ret = (std::min)(n, s);
   memcpy(ptr, bytes_ + offset_, ret * size);
   offset_ += ret * size;
   return ret;

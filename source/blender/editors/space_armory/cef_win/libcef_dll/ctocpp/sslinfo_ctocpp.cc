@@ -181,7 +181,7 @@ void CefSSLInfoCToCpp::GetDEREncodedIssuerChain(IssuerChainBinaryList& chain) {
 
   // Translate param: chain; type: refptr_vec_same_byref
   size_t chainSize = chain.size();
-  size_t chainCount = std::max(GetIssuerChainSize(), chainSize);
+  size_t chainCount = (std::max)(GetIssuerChainSize(), chainSize);
   cef_binary_value_t** chainList = NULL;
   if (chainCount > 0) {
     chainList = new cef_binary_value_t*[chainCount];
@@ -220,7 +220,7 @@ void CefSSLInfoCToCpp::GetPEMEncodedIssuerChain(IssuerChainBinaryList& chain) {
 
   // Translate param: chain; type: refptr_vec_same_byref
   size_t chainSize = chain.size();
-  size_t chainCount = std::max(GetIssuerChainSize(), chainSize);
+  size_t chainCount = (std::max)(GetIssuerChainSize(), chainSize);
   cef_binary_value_t** chainList = NULL;
   if (chainCount > 0) {
     chainList = new cef_binary_value_t*[chainCount];
