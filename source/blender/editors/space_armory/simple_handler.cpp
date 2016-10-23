@@ -79,7 +79,7 @@ bool SimpleHandler::OnConsoleMessage(CefRefPtr<CefBrowser> browser,
 	if (strlen(message.ToString().c_str()) >= 512) {
 		// Message too long, output to console
 		printf("%s\n", message.ToString().c_str());
-		return;
+		return true;
 	}
 
 	int pos = message.ToString().find(" ", 0);
@@ -96,4 +96,6 @@ bool SimpleHandler::OnConsoleMessage(CefRefPtr<CefBrowser> browser,
 		strcpy(armory_console, message.ToString().c_str());
 		armory_console_updated = 1;
 	}
+
+	return true;
 }

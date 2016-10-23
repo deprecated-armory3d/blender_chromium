@@ -21,7 +21,13 @@
 #include "ArmoryWrapper.h"
 #include "simple_app.h"
 #include "simple_handler.h"
+#if defined(OS_WIN)
+#include "include/cef_sandbox_win.h"
+#elif defined(OS_LINUX)
+#include <X11/Xlib.h>
+#else
 #include "include/cef_application_mac.h"
+#endif
 #include "include/wrapper/cef_helpers.h"
 
 char armory_url[512];
@@ -31,9 +37,32 @@ int armory_console_updated;
 char armory_operator[512];
 int armory_operator_updated;
 
+
+
+
+
 void armoryNew() {
+
+#if defined(OS_WIN)
+	CefEnableHighDPISupport();
+	// CefMainArgs main_args(hInstance);
+	CefMainArgs main_args(NULL);
+	void* sandbox_info = NULL;
+	int exit_code = CefExecuteProcess(main_args, NULL, sandbox_info);
+#elif defined(OS_LINUX)
 	CefMainArgs main_args(0, NULL);
+	void* sandbox_info = NULL;
+	int exit_code = CefExecuteProcess(main_args, NULL, sandbox_info);
+#else
+	CefMainArgs main_args(0, NULL);
+#endif
+
 	CefSettings settings;
+
+#if defined(OS_WIN)
+	settings.no_sandbox = true;
+#endif
+
 	CefRefPtr<SimpleApp> app(new SimpleApp);
 	CefInitialize(main_args, settings, app.get(), NULL);
 }
