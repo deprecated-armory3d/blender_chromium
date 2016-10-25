@@ -45,6 +45,12 @@ void SimpleHandler::FinishLaunching() {
 }
 
 void SimpleHandler::UpdatePosition(int x, int y, int w, int h) {
+	float scale = [[[NSApplication sharedApplication] mainWindow] backingScaleFactor];
+	if (scale == 0.0) scale = 1.0;
+
+	NSView* view = browser->GetHost()->GetWindowHandle();
+	NSRect newFrame = CGRectMake(x / scale, y / scale, w / scale, h / scale);
+	[view setFrame:newFrame];
 }
 
 bool SimpleHandler::HasFocus() {

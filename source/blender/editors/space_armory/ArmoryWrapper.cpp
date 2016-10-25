@@ -82,7 +82,9 @@ void armoryUpdatePosition(int x, int y, int w, int h) {
 }
 
 void armoryFree() {
+#if defined(OS_WIN) || defined(OS_LINUX)
 	CefShutdown();
+#endif
 }
 
 void armoryCallJS() {
