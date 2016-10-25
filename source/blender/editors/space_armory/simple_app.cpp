@@ -22,8 +22,10 @@ void SimpleApp::OnContextInitialized() {
 	// SimpleHandler implements browser-level callbacks.
 	handler = CefRefPtr<SimpleHandler>(new SimpleHandler());
 
+// #if !defined(OS_WIN) && !defined(OS_LINUX)
 	CefDoMessageLoopWork(); // Calls finishLaunching on its own?
 	// handler->FinishLaunching();
+// #endif
 }
 
 void SimpleApp::CreateNewBrowser() {
@@ -36,4 +38,9 @@ void SimpleApp::CreateNewBrowser() {
 	CefWindowInfo windowInfo;
 	SimpleHandler::GetInstance()->WindowInfoSetAsChild(&windowInfo);
 	CefBrowserHost::CreateBrowserSync(windowInfo, SimpleHandler::GetInstance(), "about:blank", browser_settings, NULL);
+}
+
+void SimpleApp::OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) {
+	// CefString noplug(L"disable-plugins"); 
+	// command_line->AppendSwitch(noplug);
 }

@@ -43,3 +43,10 @@ void SimpleHandler::HideBrowser() {
 void SimpleHandler::FinishLaunching() {
 	[NSApp finishLaunching];
 }
+
+void SimpleHandler::UpdatePosition(int x, int y, int w, int h) {
+}
+
+bool SimpleHandler::HasFocus() {
+	return true;
+}

@@ -19,6 +19,8 @@ class SimpleApp : public CefApp,
 	// CefBrowserProcessHandler methods:
 	virtual void OnContextInitialized() OVERRIDE;
 
+	virtual void OnBeforeCommandLineProcessing(const CefString& process_type, CefRefPtr<CefCommandLine> command_line) OVERRIDE;
+
 	static void CreateNewBrowser();
 
  private:

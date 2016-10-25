@@ -620,5 +620,10 @@ void WM_exit(bContext *C)
 	}
 #endif
 
+#ifdef WIN32
+	// Quit console window if cef did not start yet, temporary!
+	TerminateProcess(GetCurrentProcess(), 0);
+#else
 	exit(G.is_break == true);
+#endif
 }

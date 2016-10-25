@@ -51,7 +51,7 @@
 #include "ArmoryWrapper.h"
  
 static SpaceLink *armory_new(const bContext *C)
-{
+{	
 	ScrArea *sa= CTX_wm_area(C);
 	ARegion *ar;
 	SpaceArmory *sarmory;
@@ -74,7 +74,7 @@ static SpaceLink *armory_new(const bContext *C)
 
 	return (SpaceLink *)sarmory;
 }
- 
+
 bool browser_initialized = false;
 int last_win_x = 0;
 int last_win_y = 0;
@@ -117,6 +117,9 @@ static void armory_main_area_init(wmWindowManager *wm, ARegion *ar)
 		}
 		armoryShow(x, y, w, h);
 	}
+	else {
+		armoryUpdatePosition(x, y, w, h);
+	}
 
 	/* Window was resized */
 	// if (wm->winactive->sizex != last_win_w || wm->winactive->sizey != last_win_h)
@@ -139,11 +142,18 @@ static void armory_main_area_exit(wmWindowManager *wm, ARegion *ar)
 		}
 	}
 }
- 
+
+static void armory_main_area_free(ARegion *ar)
+{
+	armoryFree();
+}
+
 static void armory_main_area_draw(const bContext *C, ARegion *ar)
 {
-	// armoryDraw();
-	return;
+	int x = ar->winrct.xmin;
+	int y = ar->winrct.ymin - 1;
+	int w = ar->winrct.xmax - ar->winrct.xmin;
+	int h = ar->winrct.ymax - ar->winrct.ymin + 2;
 
 	/* draw entirely, view changes should be handled here */
 	SpaceArmory *sarmory = CTX_wm_space_armory(C);
@@ -183,7 +193,6 @@ static void armory_header_area_draw(const bContext *C, ARegion *ar)
 void ED_spacetype_armory(void)
 {
 	armoryNew();
-	
 
 	SpaceType *st = MEM_callocN(sizeof(SpaceType), "spacetype armory");
 	ARegionType *art;
@@ -200,6 +209,7 @@ void ED_spacetype_armory(void)
 	art->init = armory_main_area_init;
 	art->exit = armory_main_area_exit;
 	art->draw = armory_main_area_draw;
+	art->free = armory_main_area_free;
  
 	BLI_addhead(&st->regiontypes, art);
  

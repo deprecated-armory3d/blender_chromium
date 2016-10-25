@@ -47,6 +47,8 @@ class SimpleHandler : public CefClient,
 
   void WindowInfoSetAsChild(CefWindowInfo *window_info);
   void ShowBrowser(int x, int y, int w, int h);
+  void UpdatePosition(int x, int y, int w, int h);
+  bool HasFocus();
   void HideBrowser();
   void FinishLaunching();
 

@@ -29,6 +29,7 @@
 #include "include/cef_application_mac.h"
 #endif
 #include "include/wrapper/cef_helpers.h"
+#include <windows.h>
 
 char armory_url[512];
 char armory_jssource[512];
@@ -37,32 +38,21 @@ int armory_console_updated;
 char armory_operator[512];
 int armory_operator_updated;
 
-
-
-
-
 void armoryNew() {
 
 #if defined(OS_WIN)
 	CefEnableHighDPISupport();
-	// CefMainArgs main_args(hInstance);
 	CefMainArgs main_args(NULL);
-	void* sandbox_info = NULL;
-	int exit_code = CefExecuteProcess(main_args, NULL, sandbox_info);
-#elif defined(OS_LINUX)
-	CefMainArgs main_args(0, NULL);
-	void* sandbox_info = NULL;
-	int exit_code = CefExecuteProcess(main_args, NULL, sandbox_info);
 #else
 	CefMainArgs main_args(0, NULL);
 #endif
 
+	if (CefExecuteProcess(main_args, NULL, NULL) > 0) {
+		return;
+	}
+
 	CefSettings settings;
-
-#if defined(OS_WIN)
 	settings.no_sandbox = true;
-#endif
-
 	CefRefPtr<SimpleApp> app(new SimpleApp);
 	CefInitialize(main_args, settings, app.get(), NULL);
 }
@@ -79,11 +69,20 @@ void armoryShow(int x, int y, int w, int h) {
 
 void armoryExit() {
 	SimpleHandler::GetInstance()->HideBrowser();
-	SimpleHandler::GetInstance()->browser->GetMainFrame()->LoadURL("about:blank");
 }
 
 void armoryDraw() {
-	CefDoMessageLoopWork();
+	if (SimpleHandler::GetInstance()->HasFocus()) {
+		CefDoMessageLoopWork();
+	}
+}
+
+void armoryUpdatePosition(int x, int y, int w, int h) {
+	SimpleHandler::GetInstance()->UpdatePosition(x, y, w, h);
+}
+
+void armoryFree() {
+	CefShutdown();
 }
 
 void armoryCallJS() {

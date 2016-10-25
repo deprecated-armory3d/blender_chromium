@@ -1309,10 +1309,12 @@ LRESULT WINAPI GHOST_SystemWin32::s_wndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				 */
 				case WM_NCPAINT:
 				/* An application sends the WM_NCPAINT message to a window when its frame must be painted. */
+					break;
 				case WM_NCACTIVATE:
 				/* The WM_NCACTIVATE message is sent to a window when its nonclient area needs to be changed
 				 * to indicate an active or inactive state.
 				 */
+					return DefWindowProc(hwnd, msg, TRUE, lParam); // Keep window active
 				case WM_DESTROY:
 				/* The WM_DESTROY message is sent when a window is being destroyed. It is sent to the window
 				 * procedure of the window being destroyed after the window is removed from the screen.

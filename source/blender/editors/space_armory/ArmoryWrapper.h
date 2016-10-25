@@ -30,6 +30,8 @@
     void armoryShow(int x, int y, int w, int h);
     void armoryExit(void);
     void armoryDraw(void);
+    void armoryFree(void);
+    void armoryUpdatePosition(int x, int y, int w, int h);
 
     void armoryCallJS();
     void armoryLoadUrl();

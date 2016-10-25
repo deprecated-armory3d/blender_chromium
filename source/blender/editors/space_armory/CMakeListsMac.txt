@@ -37,7 +37,6 @@ set(INC_SYS
 )
  
 set(SRC
-
 	cef/include/base/cef_atomic_ref_count.h
 	cef/include/base/cef_atomicops.h
 	cef/include/base/cef_basictypes.h
@@ -63,9 +62,9 @@ set(SRC
 	cef/include/base/cef_trace_event.h
 	cef/include/base/cef_tuple.h
 	cef/include/base/cef_weak_ptr.h
-	cef/include/base/internal/cef_atomicops_x86_msvc.h
+	cef/include/base/internal/cef_atomicops_atomicword_compat.h
+	cef/include/base/internal/cef_atomicops_mac.h
 	cef/include/base/internal/cef_bind_internal.h
-	cef/include/base/internal/cef_bind_internal_win.h
 	cef/include/base/internal/cef_callback_internal.h
 	cef/include/base/internal/cef_lock_impl.h
 	cef/include/base/internal/cef_raw_scoped_refptr_mismatch_checker.h
@@ -151,6 +150,7 @@ set(SRC
 	cef/include/capi/views/cef_window_capi.h
 	cef/include/capi/views/cef_window_delegate_capi.h
 	cef/include/cef_app.h
+	cef/include/cef_application_mac.h
 	cef/include/cef_auth_callback.h
 	cef/include/cef_base.h
 	cef/include/cef_browser.h
@@ -200,7 +200,6 @@ set(SRC
 	cef/include/cef_resource_handler.h
 	cef/include/cef_response.h
 	cef/include/cef_response_filter.h
-	cef/include/cef_sandbox_win.h
 	cef/include/cef_scheme.h
 	cef/include/cef_ssl_info.h
 	cef/include/cef_stream.h
@@ -216,6 +215,7 @@ set(SRC
 	cef/include/cef_zip_reader.h
 	cef/include/internal/cef_export.h
 	cef/include/internal/cef_logging_internal.h
+	cef/include/internal/cef_mac.h
 	cef/include/internal/cef_ptr.h
 	cef/include/internal/cef_string.h
 	cef/include/internal/cef_string_list.h
@@ -227,9 +227,8 @@ set(SRC
 	cef/include/internal/cef_time.h
 	cef/include/internal/cef_trace_event_internal.h
 	cef/include/internal/cef_types.h
-	cef/include/internal/cef_types_win.h
+	cef/include/internal/cef_types_mac.h
 	cef/include/internal/cef_types_wrappers.h
-	cef/include/internal/cef_win.h
 	cef/include/views/cef_box_layout.h
 	cef/include/views/cef_browser_view.h
 	cef/include/views/cef_browser_view_delegate.h
@@ -530,7 +529,7 @@ set(SRC
 	simple_app.h
 	simple_handler.cpp
 	simple_handler.h
-	simple_handler_win.cpp
+	simple_handler_mac.mm
 )
 
 add_definitions(${GL_DEFINITIONS})
@@ -539,6 +538,20 @@ add_definitions(-DUSING_CEF_SHARED)
  
 blender_add_lib(bf_editor_space_armory "${SRC}" "${INC}" "${INC_SYS}")
 
-LINK_DIRECTORIES(cef/Release)
-TARGET_LINK_LIBRARIES(bf_editor_space_armory libcef.lib)
-TARGET_LINK_LIBRARIES(bf_editor_space_armory cef_sandbox.lib)
+
+macro(AddExternalFramework fwname appname libpath)
+	unset(FRAMEWORK_${fwname} CACHE)
+
+    find_library(FRAMEWORK_${fwname}
+        NAMES Chromium\ Embedded\ Framework
+        PATHS ${libpath} 
+        NO_DEFAULT_PATH)
+    if( ${FRAMEWORK_${fwname}} STREQUAL FRAMEWORK_${fwname}-NOTFOUND)
+        MESSAGE(ERROR ": Framework ${fwname} not found: ${FRAMEWORK_${fwname}}")
+    else()
+        TARGET_LINK_LIBRARIES(${appname} ${FRAMEWORK_${fwname}})
+        MESSAGE(STATUS "Framework ${fwname} found at ${FRAMEWORK_${fwname}}")
+    endif()
+endmacro(AddExternalFramework)
+
+AddExternalFramework(ChromiumEmbeddedFramework bf_editor_space_armory /Users/lubos/armory/blender-build/blender/source/blender/editors/space_armory/cef/Frameworks)

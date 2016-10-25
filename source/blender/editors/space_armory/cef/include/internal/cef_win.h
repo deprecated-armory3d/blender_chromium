@@ -110,7 +110,8 @@ class CefWindowInfo : public CefStructBase<CefWindowInfoTraits> {
   // Create the browser as a child window.
   ///
   void SetAsChild(CefWindowHandle parent, RECT windowRect) {
-    style = WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_TABSTOP |
+    style = WS_POPUP | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_TABSTOP | // Set as borderless popup
+    // style = WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_TABSTOP |
             WS_VISIBLE;
     parent_window = parent;
     x = windowRect.left;

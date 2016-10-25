@@ -38,7 +38,6 @@ void SimpleHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString
 
 void SimpleHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser_) {
 	CEF_REQUIRE_UI_THREAD();
-
 	// Add to the list of existing browsers.
 	browser = browser_;
 }
@@ -47,13 +46,11 @@ bool SimpleHandler::DoClose(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
 	// Allow the close. For windowed browsers this will result in the OS close
 	// event being sent.
-
 	return false;
 }
 
 void SimpleHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser) {
 	CEF_REQUIRE_UI_THREAD();
-
 	browser = NULL;
 }
 

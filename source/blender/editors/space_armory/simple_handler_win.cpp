@@ -8,13 +8,21 @@
 #include "include/wrapper/cef_helpers.h"
 #include <Windows.h>
 
+namespace {
+	HWND mainWindow;
+	bool resizing = false;
+}
+
 void SimpleHandler::PlatformTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title) {
 
 }
 
 void SimpleHandler::WindowInfoSetAsChild(CefWindowInfo *window_info) {
 
-	window_info->SetAsChild(GetActiveWindow(), 0, 0, 0, 0);
+	mainWindow = GetActiveWindow();
+
+	RECT rect = { 0 };
+	window_info->SetAsChild(GetActiveWindow(), rect);
 }
 
 void SimpleHandler::ShowBrowser(int x, int y, int w, int h) {
@@ -22,20 +30,67 @@ void SimpleHandler::ShowBrowser(int x, int y, int w, int h) {
 	
 	float scale = 1.0;
 
-	HWND* view = browser->GetHost()->GetWindowHandle();
-	SetWindowPos(view, HWND_TOP, x / scale, y / scale, w / scale, h / scale, SWP_SHOWWINDOW)
+	HWND view = browser->GetHost()->GetWindowHandle();
 
-	SetParent(view, GetActiveWindow());
+	RECT r;
+	GetWindowRect(mainWindow, &r);
+	int parentH = r.bottom - r.top;
 
+	// HMONITOR monitor = MonitorFromWindow(mainWindow, MONITOR_DEFAULTTONEAREST);
+	// MONITORINFO info;
+	// info.cbSize = sizeof(MONITORINFO);
+	// GetMonitorInfo(monitor, &info);
+	// int monitor_height = info.rcMonitor.bottom - info.rcMonitor.top;
+
+	int offset = 14;
+
+	SetWindowPos(view, HWND_TOP, r.left + x + offset, r.top + (parentH - y - h) - offset, w, h, SWP_SHOWWINDOW);
+
+}
+
+void SimpleHandler::UpdatePosition(int x, int y, int w, int h) {
+	RECT r;
+	GetWindowRect(mainWindow, &r);
+	int parentH = r.bottom - r.top;
+
+	int offset = 14;
+	HWND view = browser->GetHost()->GetWindowHandle();
+	SetWindowPos(view, HWND_TOP, r.left + x + offset, r.top + (parentH - y - h) - offset, w, h, SWP_SHOWWINDOW);
 }
 
 void SimpleHandler::HideBrowser() {
 	CEF_REQUIRE_UI_THREAD();
 	
-	HWND* view = browser->GetHost()->GetWindowHandle();
+	HWND view = browser->GetHost()->GetWindowHandle();
 	ShowWindow(view, SW_HIDE);
 }
 
 void SimpleHandler::FinishLaunching() {
 	
+}
+
+bool SimpleHandler::HasFocus() {
+	RECT r;
+	GetWindowRect(mainWindow, &r);
+
+	if (resizing) {
+		if (GetKeyState(VK_LBUTTON) < 0) {
+			return false;
+		}
+		else {
+			resizing = false;
+			return false;
+		}
+	}
+	POINT p;
+	if (GetCursorPos(&p)) {
+		if (p.x <= r.left + 50 || p.x >= r.right - 50 || p.y >= r.bottom - 50 || p.y <= r.top + 50) {
+			if (GetKeyState(VK_LBUTTON) < 0) {
+				resizing = true;
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
