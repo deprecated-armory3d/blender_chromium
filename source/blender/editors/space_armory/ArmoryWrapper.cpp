@@ -23,13 +23,13 @@
 #include "simple_handler.h"
 #if defined(OS_WIN)
 #include "include/cef_sandbox_win.h"
+#include <windows.h>
 #elif defined(OS_LINUX)
 #include <X11/Xlib.h>
 #else
 #include "include/cef_application_mac.h"
 #endif
 #include "include/wrapper/cef_helpers.h"
-#include <windows.h>
 
 char armory_url[512];
 char armory_jssource[512];
