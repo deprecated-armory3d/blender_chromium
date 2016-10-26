@@ -76,33 +76,35 @@ static SpaceLink *armory_new(const bContext *C)
 }
 
 bool browser_initialized = false;
-int last_win_x = 0;
-int last_win_y = 0;
-int last_win_w = 0;
-int last_win_h = 0;
-int active_ids[4] = {-1, -1, -1, -1}; /* Max 4 running browsers */
+// int last_win_x = 0;
+// int last_win_y = 0;
+// int last_win_w = 0;
+// int last_win_h = 0;
+// int active_ids[4] = {-1, -1, -1, -1}; /* Max 4 running browsers */
 /* add handlers, stuff you only do once or on area/region changes */
 static void armory_main_area_init(wmWindowManager *wm, ARegion *ar)
 {
 	UI_view2d_region_reinit(&ar->v2d, V2D_COMMONVIEW_CUSTOM, ar->winx, ar->winy);
 
 	/* check if browser in this area is running */
-	bool browser_running = false;
-    int id = ar->swinid;
-    for (int i = 0; i < 4; ++i) {
-    	if (active_ids[i] == id) { /* already running */
-    		browser_running = true;
-    		break;
-    	}
-    }
-    if (!browser_running) { /* assing id of new browser */
-    	for (int i = 0; i < 4; ++i) {
-    		if (active_ids[i] == -1) {
-    			active_ids[i] = id;
-    			break;
-    		}
-    	}
-    }
+	// bool browser_running = false;
+ //    int id = ar->swinid;
+ //    for (int i = 0; i < 4; ++i) {
+ //    	if (active_ids[i] == id) { /* already running */
+ //    		browser_running = true;
+ //    		break;
+ //    	}
+ //    }
+ //    if (!browser_running) { /* assing id of new browser */
+ //    	for (int i = 0; i < 4; ++i) {
+ //    		if (active_ids[i] == -1) {
+ //    			active_ids[i] = id;
+ //    			break;
+ //    		}
+ //    	}
+ //    }
+
+	bool browser_running = armoryStarted();
     
 	int x = ar->winrct.xmin;
 	int y = ar->winrct.ymin - 1;
@@ -124,10 +126,10 @@ static void armory_main_area_init(wmWindowManager *wm, ARegion *ar)
 	/* Window was resized */
 	// if (wm->winactive->sizex != last_win_w || wm->winactive->sizey != last_win_h)
 
-	last_win_x = wm->winactive->posx;
-	last_win_y = wm->winactive->posy;
-	last_win_w = wm->winactive->sizex;
-	last_win_h = wm->winactive->sizey;
+	// last_win_x = wm->winactive->posx;
+	// last_win_y = wm->winactive->posy;
+	// last_win_w = wm->winactive->sizex;
+	// last_win_h = wm->winactive->sizey;
 }
 
 static void armory_main_area_exit(wmWindowManager *wm, ARegion *ar)
@@ -135,12 +137,12 @@ static void armory_main_area_exit(wmWindowManager *wm, ARegion *ar)
 	armoryExit();
 
 	/* Clean id */
-	for (int i = 0; i < 4; ++i) {
-		if (active_ids[i] == ar->swinid) {
-			active_ids[i] = -1;
-			break;
-		}
-	}
+	// for (int i = 0; i < 4; ++i) {
+	// 	if (active_ids[i] == ar->swinid) {
+	// 		active_ids[i] = -1;
+	// 		break;
+	// 	}
+	// }
 }
 
 static void armory_main_area_free(ARegion *ar)

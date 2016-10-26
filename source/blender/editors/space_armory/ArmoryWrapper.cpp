@@ -37,6 +37,7 @@ char armory_console[512];
 int armory_console_updated;
 char armory_operator[512];
 int armory_operator_updated;
+bool armory_started = false;
 
 void armoryNew() {
 
@@ -65,16 +66,24 @@ void armoryShow(int x, int y, int w, int h) {
 	SimpleHandler::GetInstance()->ShowBrowser(x, y, w, h);
 	std::string url(armory_url, strlen(armory_url));
 	SimpleHandler::GetInstance()->browser->GetMainFrame()->LoadURL(url);
+
+	armory_started = true;
 }
 
 void armoryExit() {
 	SimpleHandler::GetInstance()->HideBrowser();
+
+	armory_started = false;
 }
 
 void armoryDraw() {
 	if (SimpleHandler::GetInstance()->HasFocus()) {
 		CefDoMessageLoopWork();
 	}
+}
+
+bool armoryStarted() {
+	return armory_started;
 }
 
 void armoryUpdatePosition(int x, int y, int w, int h) {

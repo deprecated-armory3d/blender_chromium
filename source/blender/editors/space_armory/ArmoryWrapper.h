@@ -31,6 +31,7 @@
     void armoryExit(void);
     void armoryDraw(void);
     void armoryFree(void);
+    bool armoryStarted(void);
     void armoryUpdatePosition(int x, int y, int w, int h);
 
     void armoryCallJS();
