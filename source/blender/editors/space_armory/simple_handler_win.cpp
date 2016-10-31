@@ -25,10 +25,18 @@ void SimpleHandler::WindowInfoSetAsChild(CefWindowInfo *window_info) {
 	window_info->SetAsChild(GetActiveWindow(), rect);
 }
 
+float dpiScale = 1.0;
 void SimpleHandler::ShowBrowser(int x, int y, int w, int h) {
 	CEF_REQUIRE_UI_THREAD();
 	
-	float scale = 1.0;
+	// SetProcessDPIAware(); //true
+	HDC screen = GetDC(NULL);
+	double hPixelsPerInch = GetDeviceCaps(screen,LOGPIXELSX);
+	double vPixelsPerInch = GetDeviceCaps(screen,LOGPIXELSY);
+	ReleaseDC(NULL, screen);
+	dpiScale = ((hPixelsPerInch + vPixelsPerInch) * 0.5) / 96;
+
+	//float scale = 1.0;
 
 	HWND view = browser->GetHost()->GetWindowHandle();
 
@@ -42,7 +50,7 @@ void SimpleHandler::ShowBrowser(int x, int y, int w, int h) {
 	// GetMonitorInfo(monitor, &info);
 	// int monitor_height = info.rcMonitor.bottom - info.rcMonitor.top;
 
-	int offset = 14;
+	int offset = 5 + 4 * dpiScale;// 9;//14;
 
 	SetWindowPos(view, HWND_TOP, r.left + x + offset, r.top + (parentH - y - h) - offset, w, h, SWP_SHOWWINDOW);
 
@@ -53,7 +61,7 @@ void SimpleHandler::UpdatePosition(int x, int y, int w, int h) {
 	GetWindowRect(mainWindow, &r);
 	int parentH = r.bottom - r.top;
 
-	int offset = 14;
+	int offset = 5 + 4 * dpiScale;// 9;//14;
 	HWND view = browser->GetHost()->GetWindowHandle();
 	SetWindowPos(view, HWND_TOP, r.left + x + offset, r.top + (parentH - y - h) - offset, w, h, SWP_SHOWWINDOW);
 }
