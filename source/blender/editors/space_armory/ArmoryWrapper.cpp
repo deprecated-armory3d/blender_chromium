@@ -72,7 +72,7 @@ void armoryShow(int x, int y, int w, int h) {
 
 void armoryExit() {
 	SimpleHandler::GetInstance()->HideBrowser();
-
+	SimpleHandler::GetInstance()->browser->GetMainFrame()->LoadURL("about:blank");
 	armory_started = false;
 }
 
