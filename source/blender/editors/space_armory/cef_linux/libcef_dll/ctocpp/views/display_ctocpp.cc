@@ -62,7 +62,7 @@ size_t CefDisplay::GetDisplayCount() {
   return _retval;
 }
 
-void CefDisplay::GetAllDisplays(std::vector<CefRefPtr<CefDisplay>>& displays) {
+void CefDisplay::GetAllDisplays(std::vector<CefRefPtr<CefDisplay> >& displays) {
   // AUTO-GENERATED CONTENT - DELETE THIS COMMENT BEFORE MODIFYING
 
   // Translate param: displays; type: refptr_vec_same_byref

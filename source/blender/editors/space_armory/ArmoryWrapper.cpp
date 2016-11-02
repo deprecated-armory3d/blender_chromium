@@ -48,12 +48,15 @@ void armoryNew() {
 	CefMainArgs main_args(0, NULL);
 #endif
 
-	if (CefExecuteProcess(main_args, NULL, NULL) > 0) {
+	if (CefExecuteProcess(main_args, NULL, NULL) >= 0) {
 		return;
 	}
 
 	CefSettings settings;
 	settings.no_sandbox = true;
+#if defined(OS_LINUX)
+	CefString(&settings.browser_subprocess_path) = "./cefsimple";
+#endif
 	CefRefPtr<SimpleApp> app(new SimpleApp);
 	CefInitialize(main_args, settings, app.get(), NULL);
 }

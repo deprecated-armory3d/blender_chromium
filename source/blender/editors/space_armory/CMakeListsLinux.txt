@@ -535,8 +535,12 @@ set(SRC
 add_definitions(${GL_DEFINITIONS})
 
 add_definitions(-DUSING_CEF_SHARED)
- 
+
 blender_add_lib(bf_editor_space_armory "${SRC}" "${INC}" "${INC_SYS}")
 
-LINK_DIRECTORIES(cef/Release)
-TARGET_LINK_LIBRARIES(bf_editor_space_armory libcef.so)
+#set_target_properties(bf_editor_space_armory PROPERTIES INSTALL_RPATH "$ORIGIN")
+#set_target_properties(bf_editor_space_armory PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
+#set_target_properties(bf_editor_space_armory PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CEF_TARGET_OUT_DIR})
+
+TARGET_LINK_LIBRARIES(bf_editor_space_armory /home/lubos/blender-git/blender/source/blender/editors/space_armory/cef/Release/libcef.so)
+
